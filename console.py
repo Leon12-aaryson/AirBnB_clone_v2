@@ -124,7 +124,7 @@ class HBNBCommand(cmd.Cmd):
                 return
 
 
-            class_name, *params = shlex.split(args)
+            class_name = args.split(" ")[0]
 
             if class_name not in ["BaseModel", "User", "Place", "State", "City",
                                   "Amenity", "Review"]:
@@ -132,7 +132,7 @@ class HBNBCommand(cmd.Cmd):
                 return
 
             kwargs = {}
-            commands = arg.split(" ")
+            commands = args.split(" ")
             for i in range(1, len(commands)):
 
                 key = commands[i].split("=")[0]
