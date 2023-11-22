@@ -117,49 +117,79 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
-            print("** class name missing **")
-            return
-
-        class_name, *params = shlex.split(args)
-
-        if class_name not in ["BaseModel", "User", "Place", "State", "City",
-                              "Amenity", "Review"]:
-            print("** class doesn't exist **")
-            return
 
         try:
-            # Get the class dynamically using globals()
-            model_class = globals()[class_name]
-        except KeyError:
-            print("** class doesn't exist **")
+            if not args:
+                print("** class name missing **")
+                return
+
+
+            class_name, *params = shlex.split(args)
+
+            if class_name not in ["BaseModel", "User", "Place", "State", "City",
+                                  "Amenity", "Review"]:
+                print("** class doesn't exist **")
+                return
+
+            kwargs = {}
+            commands = arg.split(" ")
+            for i in range(1, len(commands)):
+
+                key = commands[i].split("=")[0]
+                value = commands[i].split("=")[1]
+                #key, value = tuple(commands[i].split("="))
+                if value.startswith('"'):
+                    value = value.strip('"').replace("_", " ")
+                else:
+                    try:
+                        value = eval(value)
+                    except (SyntaxError, NameError):
+                        continue
+                kwargs[key] = value
+
+            if kwargs == {}:
+                new_instance = eval(class_name)()
+            else:
+                new_instance = eval(class_name)(**kwargs)
+            storage.new(new_instance)
+            print(new_instance.id)
+            storage.save()
+        except ValueError:
+            print(ValueError)
             return
+
+        #try:
+            # Get the class dynamically using globals()
+            #model_class = globals()[class_name]
+        #except KeyError:
+            #print("** class doesn't exist **")
+            #return
 
         # Create an instance of the specified class
-        new_instance = model_class()
+        #new_instance = model_class()
 
-        for param in params:
-            try:
-                key, value = param.split('=')
-                key = key.replace('_', ' ')  # Replace underscores with spaces
-                value = value.replace('"', '').replace('_', ' ')
+        #for param in params:
+            #try:
+                #key, value = param.split('=')
+                #key = key.replace('_', ' ')  # Replace underscores with spaces
+                #value = value.replace('"', '').replace('_', ' ')
 
                 # Use ast.literal_eval to safely evaluate the value
-                parsed_value = ast.literal_eval(value)
-                if hasattr(new_instance, key):
-                    setattr(new_instance, key, parsed_value)
-                else:
-                    print(f"Atrribute '{key}' does not exist in class '{class_name}'")
-            except (ValueError, SyntaxError, TypeError) as e:
-                print(f"Error setting attribute: {e}")
-                continue
+                #parsed_value = ast.literal_eval(value)
+                #if hasattr(new_instance, key):
+                    #setattr(new_instance, key, parsed_value)
+                #else:
+                    #print(f"Atrribute '{key}' does not exist in class '{class_name}'")
+            #except (ValueError, SyntaxError, TypeError) as e:
+                #print(f"Error setting attribute: {e}")
+                #continue
 
-        try:
+        #try:
             # Save the instance
-            new_instance.save()
-            print(new_instance.id)
-        except Exception as e:
-            print(f"Error saving instance: {e}")
+            #new_instance.save()
+            #print(new_instance.id)
+        #except Exception as e:
+            #print(f"Error saving instance: {e}")
 
         # elif args not in HBNBCommand.classes:
         #     print("** class doesn't exist **")
