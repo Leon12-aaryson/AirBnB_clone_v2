@@ -5,6 +5,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Column, String, ForeignKey
 from models.base_model import BaseModel, Base
 
+
 class State(BaseModel, Base):
     __tablename__ = 'states'
 
@@ -14,4 +15,5 @@ class State(BaseModel, Base):
     id = Column(String(60), nullable=False, primary_key=True)
 
     # Add relationship to City
-    cities = relationship("City", backref="state", cascade="all, delete-orphan")
+    cities = relationship("City", backref="state",
+                          cascade="all, delete-orphan")
