@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+"""This introduces flask project of hbnb"""
 from flask import Flask
 app = Flask(__name__)
 
