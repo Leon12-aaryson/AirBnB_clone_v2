@@ -29,10 +29,9 @@ def pyth(text):
     return f'Python {form_text}'
 
 
-# @app.route("/number/", defaults={'text': 'is cool'}, strict_slashes=False)
-@app.route("/number/<n>", strict_slashes=False)
+@app.route("/number/<int:n>", strict_slashes=False)
 def number(n):
-    return f'{n} is a number'
+    return "%i is a number" % n
 
 
 if __name__ == '__main__':
