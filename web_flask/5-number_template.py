@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """This is to create more routes and display C and additional text"""
-from flask import Flask
+from flask import Flask, render_template
 
 
 app = Flask(__name__)
