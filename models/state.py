@@ -18,7 +18,7 @@ class State(BaseModel, Base):
     # Add relationship to City
     cities = relationship("City", backref="state",
                           cascade="all, delete-orphan")
-    
+
     if storage.__class__.__name__ != 'DBStorage':
         @property
         def cities(self):
