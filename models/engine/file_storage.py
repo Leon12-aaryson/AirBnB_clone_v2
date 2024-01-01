@@ -58,3 +58,7 @@ class FileStorage:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             self.__objects.pop(key, None)
             self.save()
+
+    def close(self):
+        """close method"""
+        self.reload()
